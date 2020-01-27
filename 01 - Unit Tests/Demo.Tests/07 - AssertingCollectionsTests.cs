@@ -1,10 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Xunit;
 
 namespace Demo.Tests
 {
-    class AssertingCollectionsTests
+    public class AssertingCollectionsTests
     {
+        [Fact]
+        public void Employee_Skills_ShouldntHaveEmptySkills()
+        {
+            // Arrange and Act
+            var employee = EmployeeFactory.Create("Thiago", 11000);
+
+            // Assert
+            Assert.All(employee.Skills, skill => Assert.False(string.IsNullOrWhiteSpace(skill)));
+        }
+
+        [Fact]
+        public void Employee_Skills_JuniorShouldHaveBasicSkill()
+        {
+            // Arrange and Act
+            var employee = EmployeeFactory.Create("Thiago", 1000);
+
+            // Assert 
+            Assert.Contains("OOP", employee.Skills);
+        }
+
+        [Fact]
+        public void Employee_Skills_JuniorShouldntHaveAdvancedSkill()
+        {
+            // Arrange and Act
+            var employee = EmployeeFactory.Create("Thiago", 1000);
+
+            // Assert 
+            Assert.Contains("Microservices", employee.Skills);
+        }
+
+        [Fact]
+        public void Employee_Skills_SeniorShouldHaveAllSkills()
+        {
+            // Arrange and Act
+            var employee = EmployeeFactory.Create("Thiago", 15000);
+
+            var basicSkills = new[]
+            {
+                "Progremming logic",
+                "OOP",
+                "Tests",
+                "Microservices"
+            };
+
+            // Assert 
+            Assert.Equal(basicSkills, employee.Skills);
+        }
     }
 }
