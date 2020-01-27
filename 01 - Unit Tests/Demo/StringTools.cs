@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Demo
+﻿namespace Demo
 {
-    class StringTools
+    public class StringTools
     {
+        public string Join(string name, string surname)
+        {
+            return $"{name} {surname}";
+        }
     }
 }
