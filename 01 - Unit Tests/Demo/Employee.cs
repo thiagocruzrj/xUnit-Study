@@ -23,7 +23,7 @@ namespace Demo
 
         public void DefineSalary(double salary)
         {
-            if (salary < 500) throw new Exception("Lass than allowed salary");
+            if (salary < 500) throw new Exception("Salary less than allowed");
 
             Salary = salary;
 
