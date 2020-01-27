@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Xunit;
 
 namespace Demo.Tests
 {
-    class AssertingExcepitonsTests
+    public class AssertingExcepitonsTests
     {
+        //[Fact]
     }
 }

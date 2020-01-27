@@ -31,7 +31,7 @@ namespace Demo.Tests
             var employee = EmployeeFactory.Create("Thiago", 1000);
 
             // Assert 
-            Assert.Contains("Microservices", employee.Skills);
+            Assert.DoesNotContain("Microservices", employee.Skills);
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace Demo.Tests
 
             var basicSkills = new[]
             {
-                "Progremming logic",
+                "Programming logic",
                 "OOP",
                 "Tests",
                 "Microservices"
