@@ -1,10 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FluentValidation.Results;
+using System;
 
 namespace Feature.Core
 {
-    public class Entity
+    public abstract class Entity
     {
+        public Guid Id { get; private set; }
+        public ValidationResult ValidationResult { get; protected set; }
+
+        public virtual bool IsValid()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

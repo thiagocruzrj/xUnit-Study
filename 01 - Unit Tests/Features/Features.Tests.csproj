@@ -23,4 +23,8 @@
     <Folder Include="07 - FluentAssertions\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Feature\Feature.csproj" />
+  </ItemGroup>
+
 </Project>

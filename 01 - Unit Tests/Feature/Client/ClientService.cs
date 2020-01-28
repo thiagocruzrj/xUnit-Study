@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Feature.Client
 {
-    class ClientServer
+    class ClientService
     {
     }
 }
