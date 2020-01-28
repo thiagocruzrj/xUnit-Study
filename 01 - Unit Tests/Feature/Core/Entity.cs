@@ -5,7 +5,7 @@ namespace Feature.Core
 {
     public abstract class Entity
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; protected set; }
         public ValidationResult ValidationResult { get; protected set; }
 
         public virtual bool IsValid()

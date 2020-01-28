@@ -1,8 +1,6 @@
 ﻿using Feature.Core;
 using FluentValidation;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Feature.Client
 {
@@ -17,8 +15,9 @@ namespace Feature.Client
         
         protected Client() { }
 
-        public Client(string name, string surname, DateTime birthDate, DateTime registerDate, string email, bool active)
+        public Client(Guid id, string name, string surname, DateTime birthDate, DateTime registerDate, string email, bool active)
         {
+            Id = id;
             Name = name;
             Surname = surname;
             BirthDate = birthDate;
