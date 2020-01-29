@@ -18,7 +18,7 @@ namespace Features.Tests._04___Human_Datas
             return GenerateClients(1, true).FirstOrDefault();
         }
 
-        public IEnumerable<Client> GetVariedClients()
+        public IEnumerable<Client> GetSomeClients()
         {
             var clients = new List<Client>();
 
