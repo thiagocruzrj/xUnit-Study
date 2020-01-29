@@ -1,5 +1,5 @@
 ﻿using Features.Tests._06___AutoMock;
-using Moq;
+using FluentAssertions;
 using Xunit;
 
 namespace Features.Tests._07___FluentAssertions
@@ -24,9 +24,13 @@ namespace Features.Tests._07___FluentAssertions
             // Act
             var result = client.IsValid();
 
+            // Old Assert
+            //Assert.True(result);
+            //Assert.Equal(0, client.ValidationResult.Errors.Count);
+
             // Assert
-            Assert.True(result);
-            Assert.Equal(0, client.ValidationResult.Errors.Count);
+            result.Should().BeTrue();
+            client.ValidationResult.Errors.Should().HaveCount(0);
         }
 
         [Fact(DisplayName = "New Invalid Client")]
@@ -34,14 +38,14 @@ namespace Features.Tests._07___FluentAssertions
         public void Client_NewClient_ShouldBeInvalid()
         {
             // Arrage
-            var client = _clientServiceAutoMockerFixture.GenerateValidClient();
+            var client = _clientServiceAutoMockerFixture.GenerateInvalidClient();
 
             // Act
             var result = client.IsValid();
 
             // Assert
-            Assert.False(result);
-            Assert.NotEqual(0, client.ValidationResult.Errors.Count);
+            result.Should().BeFalse();
+            client.ValidationResult.Errors.Should().HaveCountGreaterOrEqualTo(1, "Should have validation erros");
         }
     }
 }

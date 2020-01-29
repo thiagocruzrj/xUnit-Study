@@ -55,7 +55,6 @@ namespace Features.Tests._07___FluentAssertions
         public void ClientService_GetAllActives_ShouldReturnOnlyActiveClients()
         {
             // Arrange
-
             _clientTestAutoMockerFixture.Mocker.GetMock<IClientRepository>().Setup(c => c.GetAll())
                 .Returns(_clientTestAutoMockerFixture.GetSomeClients());
 
