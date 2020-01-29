@@ -14,5 +14,34 @@ namespace Features.Tests._04___Human_Datas
         {
             _clientTestsFixture = clientTestsFixture;
         }
+
+        [Fact(DisplayName = "New Valid Client")]
+        [Trait("Category", "Client Bogus Test")]
+        public void Client_NewClient_ShouldValid()
+        {
+            // Arrange
+            var client = _clientTestsFixture.GenerateValidClient();
+
+            // Act
+            var result = client.IsValid();
+
+            // Assert
+            Assert.True(result);
+            Assert.Equal(0, client.ValidationResult.Errors.Count);
+        }
+
+        [Fact(DisplayName = "New Invalid Client")]
+        [Trait("Category", "Client Bogus Test")]
+        public void Client_NewClient_ShouldInvalid()
+        {
+            // Arrange
+            var client = _clientTestsFixture.GenerateInvalidClient();
+
+            var result = client.IsValid();
+
+            // Assert
+            Assert.False(result);
+            Assert.NotEqual(0, client.ValidationResult.Errors.Count);
+        }
     }
 }
