@@ -2,6 +2,7 @@
 
 namespace Features.Tests._03___Order
 {
+    /*
     [TestCaseOrderer("Features.Tests._03___Order.PriorityOrderer", "Features.Tests._03___Order")]
     public class OrderTests
     {
@@ -55,5 +56,5 @@ namespace Features.Tests._03___Order
             Assert.True(Test4Call);
             Assert.True(Test1Call);
         }
-    }
+    }*/
 }
