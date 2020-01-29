@@ -2,18 +2,21 @@
 using Features.Tests._04___Human_Datas;
 using MediatR;
 using Moq;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using Xunit;
 
-namespace Features.Tests._05___Mock
+namespace Features.Tests._06___AutoMock
 {
     [Collection(nameof(ClientBogusCollection))]
-    public class ClientServiceTest
+    public class ClientServiceAutoMokerTests
     {
         readonly ClientTestBogusFixture _clientTestBogusFixture;
 
-        public ClientServiceTest(ClientTestBogusFixture clientTestBogusFixture)
+        public ClientServiceAutoMokerTests(ClientTestBogusFixture clientTestBogusFixture)
         {
             _clientTestBogusFixture = clientTestBogusFixture;
         }
@@ -77,4 +80,5 @@ namespace Features.Tests._05___Mock
             Assert.False(clients.Count(c => !c.Active) > 0);
         }
     }
+
 }
