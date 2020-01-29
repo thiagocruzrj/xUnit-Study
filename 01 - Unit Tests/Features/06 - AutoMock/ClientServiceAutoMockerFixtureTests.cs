@@ -1,8 +1,6 @@
 ﻿using Feature.Client;
-using Features.Tests._04___Human_Datas;
 using MediatR;
 using Moq;
-using Moq.AutoMock;
 using System.Linq;
 using System.Threading;
 using Xunit;
