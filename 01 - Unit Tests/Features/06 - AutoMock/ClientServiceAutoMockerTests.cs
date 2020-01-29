@@ -2,75 +2,69 @@
 using Features.Tests._04___Human_Datas;
 using MediatR;
 using Moq;
-using System;
-using System.Collections.Generic;
+using Moq.AutoMock;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using Xunit;
 
 namespace Features.Tests._06___AutoMock
 {
     [Collection(nameof(ClientBogusCollection))]
-    public class ClientServiceAutoMokerTests
+    public class ClientServiceAutoMockerTests
     {
         readonly ClientTestBogusFixture _clientTestBogusFixture;
 
-        public ClientServiceAutoMokerTests(ClientTestBogusFixture clientTestBogusFixture)
+        public ClientServiceAutoMockerTests(ClientTestBogusFixture clientTestBogusFixture)
         {
             _clientTestBogusFixture = clientTestBogusFixture;
         }
 
         [Fact(DisplayName = "Add client with success")]
-        [Trait("Category", "Client Service Mock Tests")]
+        [Trait("Category", "Client Service Auto Mock Tests")]
         public void ClientService_Add_ShouldExeculteWithSuccess()
         {
             // Arrage
             var client = _clientTestBogusFixture.GenerateValidClient();
-            var clientRepo = new Mock<IClientRepository>();
-            var mediator = new Mock<IMediator>();
+            var mocker = new AutoMocker();
 
-            var clientService = new ClientService(clientRepo.Object, mediator.Object);
+            var clientService = mocker.CreateInstance<ClientService>();
 
             // Act
             clientService.Add(client);
 
             // Assert
-            clientRepo.Verify(r => r.Add(client), Times.Once);
-            mediator.Verify(m => m.Publish(It.IsAny<INotification>(), CancellationToken.None), Times.Once);
+            mocker.GetMock<IClientRepository>().Verify(r => r.Add(client), Times.Once);
+            mocker.GetMock<IMediator>().Verify(m => m.Publish(It.IsAny<INotification>(), CancellationToken.None), Times.Once);
         }
 
         [Fact(DisplayName = "Add client with fail")]
-        [Trait("Category", "Client Service Mock Tests")]
+        [Trait("Category", "Client Service Auto Mock Tests")]
         public void ClientService_Add_ShouldFailDueInvalidClient()
         {
             // Arrage
             var client = _clientTestBogusFixture.GenerateInvalidClient();
-            var clientRepo = new Mock<IClientRepository>();
-            var mediator = new Mock<IMediator>();
+            var mocker = new AutoMocker();
 
-            var clientService = new ClientService(clientRepo.Object, mediator.Object);
+            var clientService = mocker.CreateInstance<ClientService>();
 
             // Act
             clientService.Add(client);
 
             // Assert
-            clientRepo.Verify(r => r.Add(client), Times.Never);
-            mediator.Verify(m => m.Publish(It.IsAny<INotification>(), CancellationToken.None), Times.Never);
+            mocker.GetMock<IClientService>().Verify(r => r.Add(client), Times.Never);
+            mocker.GetMock<IMediator>().Verify(m => m.Publish(It.IsAny<INotification>(), CancellationToken.None), Times.Never);
         }
 
         [Fact(DisplayName = "Get active clients")]
-        [Trait("Category", "Client Service Mock Tests")]
+        [Trait("Category", "Client Service Auto Mock Tests")]
         public void ClientService_GetAllActives_ShouldReturnOnlyActiveClients()
         {
             // Arrange
-            var clientRepo = new Mock<IClientRepository>();
-            var mediator = new Mock<IMediator>();
+            var mocker = new AutoMocker();
+            var clientService = mocker.CreateInstance<ClientService>();
 
-            clientRepo.Setup(c => c.GetAll())
+            mocker.GetMock<IClientRepository>().Setup(c => c.GetAll())
                 .Returns(_clientTestBogusFixture.GetSomeClients());
-
-            var clientService = new ClientService(clientRepo.Object, mediator.Object);
 
             // Act
             var clients = clientService.GetAllActives();
@@ -80,5 +74,4 @@ namespace Features.Tests._06___AutoMock
             Assert.False(clients.Count(c => !c.Active) > 0);
         }
     }
-
 }
