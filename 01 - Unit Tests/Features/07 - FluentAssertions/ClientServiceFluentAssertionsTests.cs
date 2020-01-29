@@ -1,5 +1,7 @@
 ﻿using Feature.Client;
 using Features.Tests._06___AutoMock;
+using FluentAssertions;
+using FluentAssertions.Extensions;
 using MediatR;
 using Moq;
 using System.Linq;
@@ -31,6 +33,7 @@ namespace Features.Tests._07___FluentAssertions
             _clientService.Add(client);
 
             // Assert
+            client.IsValid().Should().BeTrue("No inconsistences");
             _clientTestAutoMockerFixture.Mocker.GetMock<IClientRepository>().Verify(r => r.Add(client), Times.Once);
             _clientTestAutoMockerFixture.Mocker.GetMock<IMediator>().Verify(m => m.Publish(It.IsAny<INotification>(), CancellationToken.None), Times.Once);
         }
@@ -46,6 +49,7 @@ namespace Features.Tests._07___FluentAssertions
             _clientService.Add(client);
 
             // Assert
+            client.IsValid().Should().BeFalse("Has inconsistences");
             _clientTestAutoMockerFixture.Mocker.GetMock<IClientService>().Verify(r => r.Add(client), Times.Never);
             _clientTestAutoMockerFixture.Mocker.GetMock<IMediator>().Verify(m => m.Publish(It.IsAny<INotification>(), CancellationToken.None), Times.Never);
         }
@@ -62,8 +66,19 @@ namespace Features.Tests._07___FluentAssertions
             var clients = _clientService.GetAllActives();
 
             // Assert
-            Assert.True(clients.Any());
-            Assert.False(clients.Count(c => !c.Active) > 0);
+            //Assert.True(clients.Any());
+            //Assert.False(clients.Count(c => !c.Active) > 0);
+
+            // Assert
+            clients.Should().HaveCountGreaterOrEqualTo(1).And.OnlyHaveUniqueItems();
+            clients.Should().NotContain(c => !c.Active);
+
+            _clientTestAutoMockerFixture.Mocker.GetMock<IClientRepository>().Verify(r => r.GetAll(), Times.Once);
+
+            _clientService.ExecutionTimeOf(c => c.GetAllActives())
+                .Should()
+                .BeLessOrEqualTo(50.Milliseconds(),
+                "Is exec thousand of times by second");
         }
     }
 }
