@@ -1,6 +1,7 @@
 ﻿using Bogus;
 using Bogus.DataSets;
 using Feature.Client;
+using Moq.AutoMock;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,12 @@ namespace Features.Tests._06___AutoMock
 {
     [CollectionDefinition(nameof(ClientAutoMockerCollection))]
     public class ClientAutoMockerCollection : ICollectionFixture<ClientServiceAutoMockerFixture> { }
+
     public class ClientServiceAutoMockerFixture : IDisposable
     {
+        public ClientService ClientService;
+        public AutoMocker Mocker;
+
         public Client GenerateValidClient()
         {
             return GenerateClients(1, true).FirstOrDefault();
@@ -62,6 +67,15 @@ namespace Features.Tests._06___AutoMock
 
             return client;
         }
+
+        public ClientService GetClientService()
+        {
+            Mocker = new AutoMocker();
+            ClientService = Mocker.CreateInstance<ClientService>();
+
+            return ClientService;
+        }
+
         public void Dispose() { }
     }
 }

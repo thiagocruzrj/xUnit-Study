@@ -20,7 +20,7 @@ namespace Features.Tests._06___AutoMock
         }
 
         [Fact(DisplayName = "Add client with success")]
-        [Trait("Category", "Client Service Auto Mock Tests")]
+        [Trait("Category", "Client Service AutoMockFixture Tests")]
         public void ClientService_Add_ShouldExeculteWithSuccess()
         {
             // Arrage
@@ -38,7 +38,7 @@ namespace Features.Tests._06___AutoMock
         }
 
         [Fact(DisplayName = "Add client with fail")]
-        [Trait("Category", "Client Service Auto Mock Tests")]
+        [Trait("Category", "Client Service AutoMockFixture Tests")]
         public void ClientService_Add_ShouldFailDueInvalidClient()
         {
             // Arrage
@@ -56,7 +56,7 @@ namespace Features.Tests._06___AutoMock
         }
 
         [Fact(DisplayName = "Get active clients")]
-        [Trait("Category", "Client Service Auto Mock Tests")]
+        [Trait("Category", "Client Service AutoMockFixture Tests")]
         public void ClientService_GetAllActives_ShouldReturnOnlyActiveClients()
         {
             // Arrange

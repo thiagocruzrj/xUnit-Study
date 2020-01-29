@@ -9,14 +9,16 @@ using Xunit;
 
 namespace Features.Tests._06___AutoMock
 {
-    [Collection(nameof(ClientBogusCollection))]
+    [Collection(nameof(ClientAutoMockerCollection))]
     public class ClientServiceAutoMockerFixtureTests
     {
-        readonly ClientTestBogusFixture _clientTestBogusFixture;
+        readonly ClientServiceAutoMockerFixture _clientTestAutoMockerFixture;
+        readonly ClientService _clientService;
 
-        public ClientServiceAutoMockerFixtureTests(ClientTestBogusFixture clientTestBogusFixture)
+        public ClientServiceAutoMockerFixtureTests(ClientServiceAutoMockerFixture clientTestBogusFixture)
         {
-            _clientTestBogusFixture = clientTestBogusFixture;
+            _clientTestAutoMockerFixture = clientTestBogusFixture;
+            _clientService = _clientTestAutoMockerFixture.GetClientService();
         }
 
         [Fact(DisplayName = "Add client with success")]
@@ -24,17 +26,14 @@ namespace Features.Tests._06___AutoMock
         public void ClientService_Add_ShouldExeculteWithSuccess()
         {
             // Arrage
-            var client = _clientTestBogusFixture.GenerateValidClient();
-            var mocker = new AutoMocker();
-
-            var clientService = mocker.CreateInstance<ClientService>();
+            var client = _clientTestAutoMockerFixture.GenerateValidClient();
 
             // Act
-            clientService.Add(client);
+            _clientService.Add(client);
 
             // Assert
-            mocker.GetMock<IClientRepository>().Verify(r => r.Add(client), Times.Once);
-            mocker.GetMock<IMediator>().Verify(m => m.Publish(It.IsAny<INotification>(), CancellationToken.None), Times.Once);
+            _clientTestAutoMockerFixture.Mocker.GetMock<IClientRepository>().Verify(r => r.Add(client), Times.Once);
+            _clientTestAutoMockerFixture.Mocker.GetMock<IMediator>().Verify(m => m.Publish(It.IsAny<INotification>(), CancellationToken.None), Times.Once);
         }
 
         [Fact(DisplayName = "Add client with fail")]
@@ -42,17 +41,14 @@ namespace Features.Tests._06___AutoMock
         public void ClientService_Add_ShouldFailDueInvalidClient()
         {
             // Arrage
-            var client = _clientTestBogusFixture.GenerateInvalidClient();
-            var mocker = new AutoMocker();
-
-            var clientService = mocker.CreateInstance<ClientService>();
+            var client = _clientTestAutoMockerFixture.GenerateInvalidClient();
 
             // Act
-            clientService.Add(client);
+            _clientService.Add(client);
 
             // Assert
-            mocker.GetMock<IClientService>().Verify(r => r.Add(client), Times.Never);
-            mocker.GetMock<IMediator>().Verify(m => m.Publish(It.IsAny<INotification>(), CancellationToken.None), Times.Never);
+            _clientTestAutoMockerFixture.Mocker.GetMock<IClientService>().Verify(r => r.Add(client), Times.Never);
+            _clientTestAutoMockerFixture.Mocker.GetMock<IMediator>().Verify(m => m.Publish(It.IsAny<INotification>(), CancellationToken.None), Times.Never);
         }
 
         [Fact(DisplayName = "Get active clients")]
@@ -60,14 +56,12 @@ namespace Features.Tests._06___AutoMock
         public void ClientService_GetAllActives_ShouldReturnOnlyActiveClients()
         {
             // Arrange
-            var mocker = new AutoMocker();
-            var clientService = mocker.CreateInstance<ClientService>();
 
-            mocker.GetMock<IClientRepository>().Setup(c => c.GetAll())
-                .Returns(_clientTestBogusFixture.GetSomeClients());
+            _clientTestAutoMockerFixture.Mocker.GetMock<IClientRepository>().Setup(c => c.GetAll())
+                .Returns(_clientTestAutoMockerFixture.GetSomeClients());
 
             // Act
-            var clients = clientService.GetAllActives();
+            var clients = _clientService.GetAllActives();
 
             // Assert
             Assert.True(clients.Any());
