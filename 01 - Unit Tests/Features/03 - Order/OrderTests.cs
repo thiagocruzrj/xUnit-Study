@@ -2,6 +2,7 @@
 
 namespace Features.Tests._03___Order
 {
+    [TestCaseOrderer("Features.Tests._03___Order.PriorityOrderer", "Features.Tests._03___Order")]
     public class OrderTests
     {
         public static bool Test1Call;
@@ -9,18 +10,20 @@ namespace Features.Tests._03___Order
         public static bool Test3Call;
         public static bool Test4Call;
 
-        [Fact(DisplayName = "Test 4")]
+        // TODO : Make it all green
+
+        [Fact(DisplayName = "Test 4"), TestPriority(3)]
         [Trait("Category", "Tests Ordering")]
         public void Test4()
         {
             Test4Call = true;
 
+            Assert.True(Test3Call);
             Assert.True(Test1Call);
-            Assert.True(Test2Call);
-            Assert.False(Test3Call);
+            Assert.False(Test2Call);
         }
 
-        [Fact(DisplayName = "Test 1")]
+        [Fact(DisplayName = "Test 1"), TestPriority(2)]
         [Trait("Category", "Tests Ordering")]
         public void Test1()
         {
@@ -31,7 +34,7 @@ namespace Features.Tests._03___Order
             Assert.False(Test2Call);
         }
 
-        [Fact(DisplayName = "Test 3")]
+        [Fact(DisplayName = "Test 3"), TestPriority(1)]
         [Trait("Category", "Tests Ordering")]
         public void Test3()
         {
@@ -42,7 +45,7 @@ namespace Features.Tests._03___Order
             Assert.False(Test4Call);
         }
 
-        [Fact(DisplayName = "Test 2")]
+        [Fact(DisplayName = "Test 2"), TestPriority(4)]
         [Trait("Category", "Tests Ordering")]
         public void Test2()
         {
